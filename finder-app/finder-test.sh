@@ -6,11 +6,11 @@ set -e
 set -u
 
 NUMFILES=10
-WRITESTR=AELD_IS_FUN
+WRITESTR=stronzo
 WRITEDIR=/tmp/aeld-data
 username=$(cat conf/username.txt)
 
-if [ $# -lt 3 ]
+if [ $# -lt 3 ] #number of arguments
 then
 	echo "Using default value ${WRITESTR} for string to write"
 	if [ $# -lt 1 ]
@@ -29,14 +29,16 @@ MATCHSTR="The number of files are ${NUMFILES} and the number of matching lines a
 
 echo "Writing ${NUMFILES} files containing string ${WRITESTR} to ${WRITEDIR}"
 
-rm -rf "${WRITEDIR}"
+sudo rm -rf "${WRITEDIR}"
 
 # create $WRITEDIR if not assignment1
 assignment=`cat ../conf/assignment.txt`
 
-if [ $assignment != 'assignment1' ]
+
+
+if [ $assignment = 'assignment1' ] #error: it must be equal, otherwise it does not make sense and it does not even start the loop
 then
-	mkdir -p "$WRITEDIR"
+	sudo mkdir -p -v "$WRITEDIR"
 
 	#The WRITEDIR is in quotes because if the directory path consists of spaces, then variable substitution will consider it as multiple argument.
 	#The quotes signify that the entire string in WRITEDIR is a single string.
@@ -52,15 +54,17 @@ fi
 #make clean
 #make
 
+
 for i in $( seq 1 $NUMFILES)
 do
-	./writer.sh "$WRITEDIR/${username}$i.txt" "$WRITESTR"
+	cd /home/mysterious/aesd-assignments/finder-app/
+	sudo ./writer.sh "$WRITEDIR/${username}$i.txt" "$WRITESTR";
 done
 
 OUTPUTSTRING=$(./finder.sh "$WRITEDIR" "$WRITESTR")
 
 # remove temporary directories
-rm -rf /tmp/aeld-data
+sudo rm -rf /tmp/aeld-data
 
 set +e
 echo ${OUTPUTSTRING} | grep "${MATCHSTR}"

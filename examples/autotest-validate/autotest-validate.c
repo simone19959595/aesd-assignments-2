@@ -27,5 +27,14 @@ bool this_function_returns_false()
  */
 const char *my_username()
 {
-    return "todo-please-enter-your-username-here-in-my_username";
+    char buffer[1000];
+    int i=5;
+    int c=0;
+    FILE *ftpr = fopen("/home/mysterious/aesd-assignments/conf/username.txt","r"); // Create pointer towards the file
+    while ((c=fgetc(ftpr))!=EOF){         // Make a system that analyses the file character by character
+        fscanf(ftpr, "%s", &buffer[i]);   // Save in the array buffer the content of the file, character by character
+        printf("\n%s\n", &buffer[i]);
+        i++;
+    }
+    return 0;
 }
